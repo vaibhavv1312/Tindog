@@ -1,42 +1,132 @@
-<!-- Add this script at the end of your HTML body section -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var events = document.querySelectorAll('.cd-schedule__event');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Weekly Schedule</title>
+</head>
+<body>
+  <table id="schedule-table">
+    <thead>
+      <tr>
+        <th></th> <!-- Empty corner cell -->
+        <th>12:00 AM</th>
+        <th>1:00 AM</th>
+        <th>2:00 AM</th>
+        <th>3:00 AM</th>
+        <th>4:00 AM</th>
+        <th>5:00 AM</th>
+        <th>6:00 AM</th>
+        <th>7:00 AM</th>
+        <th>8:00 AM</th>
+        <th>9:00 AM</th>
+        <th>10:00 AM</th>
+        <th>11:00 AM</th>
+        <th>12:00 PM</th>
+        <th>1:00 PM</th>
+        <th>2:00 PM</th>
+        <th>3:00 PM</th>
+        <th>4:00 PM</th>
+        <th>5:00 PM</th>
+        <th>6:00 PM</th>
+        <th>7:00 PM</th>
+        <th>8:00 PM</th>
+        <th>9:00 PM</th>
+        <th>10:00 PM</th>
+        <th>11:00 PM</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Days -->
+      <tr>
+        <td>Monday</td>
+        <td data-day="Monday" data-time="12:00 AM"></td>
+        <td data-day="Monday" data-time="01:00 AM"></td>
+        <!-- Repeat the above columns for the rest of the days -->
+      </tr>
+      <!-- Repeat the above row for additional days -->
 
-    events.forEach(function (event) {
-      event.addEventListener('click', function (e) {
-        e.preventDefault();
+      <!-- Example: Singing event on 1:00 AM - 2:00 AM -->
+      <tr>
+        <td>Tuesday</td>
+        <td data-day="Tuesday" data-time="12:00 AM"></td>
+        <td data-day="Tuesday" data-time="01:00 AM"></td>
+        <!-- Repeat the above columns for the rest of the days -->
+      </tr>
+      <tr>
+        <td>Wednesday</td>
+        <td data-day="Wednesday" data-time="12:00 AM"></td>
+        <td data-day="Wednesday" data-time="01:00 AM"></td>
+        <!-- Repeat the above columns for the rest of the days -->
+      </tr>
+      <!-- Repeat the above row for additional days -->
 
-        // Get data attributes of the clicked event
-        var startTime = event.getAttribute('data-start');
-        var endTime = event.getAttribute('data-end');
-        var content = event.getAttribute('data-content');
-        var eventName = event.querySelector('.cd-schedule__name').textContent;
+      <!-- Example: Singing event on 1:00 AM - 2:00 AM -->
+      <tr>
+        <td>Thursday</td>
+        <td data-day="Thursday" data-time="12:00 AM"></td>
+        <td data-day="Thursday" data-time="01:00 AM"></td>
+        <!-- Repeat the above columns for the rest of the days -->
+      </tr>
+      <tr>
+        <td>Friday</td>
+        <td data-day="Friday" data-time="12:00 AM"></td>
+        <td data-day="Friday" data-time="01:00 AM"></td>
+        <!-- Repeat the above columns for the rest of the days -->
+      </tr>
+      <!-- Repeat the above row for additional days -->
 
-        // Set the modal content
-        document.querySelector('.cd-schedule-modal__date').textContent = startTime + ' - ' + endTime;
-        document.querySelector('.cd-schedule-modal__name').textContent = eventName;
-        document.querySelector('.cd-schedule-modal__event-info').textContent = content;
+      <!-- Example: Singing event on 1:00 AM - 2:00 AM -->
+      <tr>
+        <td>Saturday</td>
+        <td data-day="Saturday" data-time="12:00 AM"></td>
+        <td data-day="Saturday" data-time="01:00 AM"></td>
+        <!-- Repeat the above columns for the rest of the days -->
+      </tr>
+      <tr>
+        <td>Sunday</td>
+        <td data-day="Sunday" data-time="12:00 AM"></td>
+        <td data-day="Sunday" data-time="01:00 AM"></td>
+        <!-- Repeat the above columns for the rest of the days -->
+      </tr>
+      <!-- Repeat the above row for additional days -->
 
-        // Show the modal
-        document.querySelector('.cd-schedule-modal').classList.add('modal-visible');
+      <!-- Repeat the above rows for additional time intervals -->
+    </tbody>
+  </table>
 
-        // Handle the delete button click
-        var deleteButton = document.querySelector('.delete-event-btn');
-        deleteButton.addEventListener('click', function () {
-          // Remove the entire <li> element (event) from the schedule
-          event.parentNode.removeChild(event);
+  <button id="addEventBtn" onclick="openModal()">Add Event</button>
 
-          // Hide the modal after deleting the event
-          document.querySelector('.cd-schedule-modal').classList.remove('modal-visible');
-        });
-      });
-    });
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <form id="eventForm">
+        <label for="day">Day:</label>
+        <select id="day" required>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
 
-    // Close the modal when clicking on the close button
-    var closeButton = document.querySelector('.cd-schedule-modal__close');
-    closeButton.addEventListener('click', function () {
-      document.querySelector('.cd-schedule-modal').classList.remove('modal-visible');
-    });
-  });
-</script>
+        <label for="startTime">Start Time:</label>
+        <input type="time" id="startTime" required>
+
+        <label for="endTime">End Time:</label>
+        <input type="time" id="endTime" required>
+
+        <label for="eventName">Event Name:</label>
+        <input type="text" id="eventName" required>
+
+        <input type="submit" value="Add Event">
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
