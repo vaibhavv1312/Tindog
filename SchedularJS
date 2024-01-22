@@ -1,0 +1,92 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const addEventBtn = document.getElementById('addEventBtn');
+    const scheduleContainer = document.getElementById('schedule-table');
+    const eventModal = document.getElementById('eventModal');
+    const eventForm = document.getElementById('eventForm');
+  
+    addEventBtn.addEventListener('click', openModal);
+    eventForm.addEventListener('submit', addEvent);
+    scheduleContainer.addEventListener('click', handleDelete);
+  
+    const closeBtn = document.querySelector('.close');
+    closeBtn.addEventListener('click', closeModal);
+  
+    function openModal() {
+      eventModal.style.display = 'block';
+    }
+  
+    function closeModal() {
+      eventModal.style.display = 'none';
+    }
+  
+    function addEvent(event) {
+        event.preventDefault();
+      
+        const day = document.getElementById('day').value;
+        const startTime = document.getElementById('startTime').value;
+        const endTime = document.getElementById('endTime').value;
+        const eventName = document.getElementById('eventName').value;
+      
+        const eventBox = document.createElement('div');
+        eventBox.className = 'event';
+        eventBox.innerHTML = `<strong>${eventName}</strong><br>${startTime} - ${endTime}
+          <button class="delete-btn">Delete</button>`;
+      
+        const dayIndex = getDayIndex(day);
+        const startTimeIndex = getTimeIndex(startTime);
+        const endTimeIndex = getTimeIndex(endTime);
+      
+        if (dayIndex !== -1 && startTimeIndex !== -1 && endTimeIndex !== -1 && startTimeIndex < endTimeIndex) {
+          try {
+            const cell = findCell(day, startTime);
+            console.log('Found cell:', cell);
+      
+            const cellRect = cell.getBoundingClientRect();
+            const eventBoxHeight = cellRect.height * (endTimeIndex - startTimeIndex) / 60;
+      
+            eventBox.style.position = 'absolute';
+            eventBox.style.width = '100%';
+            eventBox.style.height = eventBoxHeight + 'px';
+      
+            cell.appendChild(eventBox);
+            closeModal();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          alert('Invalid input! Make sure the times are in the correct order.');
+        }
+    }
+      
+    function findCell(day, time) {
+        // Find the cell based on data attributes
+        const cells = document.querySelectorAll(`[data-day="${day}"][data-time="${time}"]`);
+        if (cells.length > 0) {
+          return cells[0];
+        } else {
+          // Handle case when cell is not found
+          throw new Error(`Cell not found for ${day} ${time}`);
+        }
+    }
+      
+  
+    function handleDelete(event) {
+      const target = event.target;
+      if (target.classList.contains('delete-btn')) {
+        const eventBox = target.parentElement;
+        eventBox.remove();
+      }
+    }
+  
+    function getDayIndex(day) {
+      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      return days.indexOf(day);
+    }
+  
+    function getTimeIndex(time) {
+      const [hours, minutes] = time.split(':').map(Number);
+      return hours * 60 + minutes;
+    }
+  
+});
+  
