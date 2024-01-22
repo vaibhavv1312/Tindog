@@ -1,0 +1,42 @@
+<!-- Add this script at the end of your HTML body section -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var events = document.querySelectorAll('.cd-schedule__event');
+
+    events.forEach(function (event) {
+      event.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // Get data attributes of the clicked event
+        var startTime = event.getAttribute('data-start');
+        var endTime = event.getAttribute('data-end');
+        var content = event.getAttribute('data-content');
+        var eventName = event.querySelector('.cd-schedule__name').textContent;
+
+        // Set the modal content
+        document.querySelector('.cd-schedule-modal__date').textContent = startTime + ' - ' + endTime;
+        document.querySelector('.cd-schedule-modal__name').textContent = eventName;
+        document.querySelector('.cd-schedule-modal__event-info').textContent = content;
+
+        // Show the modal
+        document.querySelector('.cd-schedule-modal').classList.add('modal-visible');
+
+        // Handle the delete button click
+        var deleteButton = document.querySelector('.delete-event-btn');
+        deleteButton.addEventListener('click', function () {
+          // Remove the clicked event from the schedule
+          event.remove();
+          
+          // Hide the modal after deleting the event
+          document.querySelector('.cd-schedule-modal').classList.remove('modal-visible');
+        });
+      });
+    });
+
+    // Close the modal when clicking on the close button
+    var closeButton = document.querySelector('.cd-schedule-modal__close');
+    closeButton.addEventListener('click', function () {
+      document.querySelector('.cd-schedule-modal').classList.remove('modal-visible');
+    });
+  });
+</script>
