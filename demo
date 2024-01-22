@@ -24,9 +24,9 @@
         // Handle the delete button click
         var deleteButton = document.querySelector('.delete-event-btn');
         deleteButton.addEventListener('click', function () {
-          // Remove the clicked event from the schedule
-          event.remove();
-          
+          // Remove the entire <li> element (event) from the schedule
+          event.parentNode.removeChild(event);
+
           // Hide the modal after deleting the event
           document.querySelector('.cd-schedule-modal').classList.remove('modal-visible');
         });
