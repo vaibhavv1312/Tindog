@@ -19,55 +19,85 @@ document.addEventListener('DOMContentLoaded', function () {
       eventModal.style.display = 'none';
     }
   
+    function findCell(day, startTime, endTime) {
+        const rows = document.querySelectorAll('tbody tr');
+        const dayIndex = getDayIndex(day);
+    
+        if (dayIndex !== -1) {
+            const cells = rows[dayIndex].querySelectorAll('td');
+            const startTimeIndex = getTimeIndex(startTime);
+            const endTimeIndex = getTimeIndex(endTime);
+    
+            if (startTimeIndex !== -1 && endTimeIndex !== -1) {
+                // Assuming endTime is greater than startTime
+                const startCell = cells[startTimeIndex];
+                const endCell = cells[endTimeIndex];
+                return startCell;
+            }
+        }
+    
+        throw new Error(`Cell not found for ${day} ${startTime} - ${endTime}`);
+    }
+    
+       
+    
+    
+    
+    // Usage in addEvent function
     function addEvent(event) {
         event.preventDefault();
       
+        // Retrieve form data
         const day = document.getElementById('day').value;
         const startTime = document.getElementById('startTime').value;
         const endTime = document.getElementById('endTime').value;
         const eventName = document.getElementById('eventName').value;
       
+        // Create a new event box
         const eventBox = document.createElement('div');
         eventBox.className = 'event';
         eventBox.innerHTML = `<strong>${eventName}</strong><br>${startTime} - ${endTime}
-          <button class="delete-btn">Delete</button>`;
+            <button class="delete-btn">Delete</button>`;
       
+        // Calculate the position and dimensions of the event box
         const dayIndex = getDayIndex(day);
-        const startTimeIndex = getTimeIndex(startTime);
-        const endTimeIndex = getTimeIndex(endTime);
       
-        if (dayIndex !== -1 && startTimeIndex !== -1 && endTimeIndex !== -1 && startTimeIndex < endTimeIndex) {
+        if (dayIndex !== -1) {
           try {
-            const cell = findCell(day, startTime);
-            console.log('Found cell:', cell);
+            const cell = findCell(day, startTime, endTime);
       
+            // Calculate the position of the event box within the cell
             const cellRect = cell.getBoundingClientRect();
-            const eventBoxHeight = cellRect.height * (endTimeIndex - startTimeIndex) / 60;
+            const startTimeIndex = getTimeIndex(startTime);
+            const endTimeIndex = getTimeIndex(endTime);
+            const cellWidth = cellRect.width;
+            
+            // Calculate the width and left position of the event box
+            const eventWidth = (endTimeIndex - startTimeIndex) * (cellWidth / 24); // Adjust based on your time scale
+            const eventLeft = startTimeIndex * (cellWidth / 24);
       
+            // Set the position and dimensions of the event box
             eventBox.style.position = 'absolute';
-            eventBox.style.width = '100%';
-            eventBox.style.height = eventBoxHeight + 'px';
+            eventBox.style.left = eventLeft + 'px';
+            eventBox.style.width = eventWidth + 'px';
+            eventBox.style.height = cellRect.height + 'px';
       
+            // Append the event box to the cell
             cell.appendChild(eventBox);
+      
+            // Close the modal after adding the event
             closeModal();
           } catch (error) {
             console.error(error);
           }
         } else {
-          alert('Invalid input! Make sure the times are in the correct order.');
+          alert('Invalid day input!');
         }
     }
       
-    function findCell(day, time) {
-        // Find the cell based on data attributes
-        const cells = document.querySelectorAll(`[data-day="${day}"][data-time="${time}"]`);
-        if (cells.length > 0) {
-          return cells[0];
-        } else {
-          // Handle case when cell is not found
-          throw new Error(`Cell not found for ${day} ${time}`);
-        }
-    }
+      
+      
+    
       
   
     function handleDelete(event) {
