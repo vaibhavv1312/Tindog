@@ -41,8 +41,8 @@
       <!-- Days -->
       <tr>
         <td>Monday</td>
-        <td data-day="Monday" data-time="12:00 AM"></td>
-        <td data-day="Monday" data-time="01:00 AM"></td>
+        <td data-day="Monday" data-start="12:00 AM" data-end="01:00 AM"></td>
+        <td data-day="Monday" data-start="01:00 AM" data-end="02:00 AM"></td>
         <!-- Repeat the above columns for the rest of the days -->
       </tr>
       <!-- Repeat the above row for additional days -->
@@ -50,8 +50,8 @@
       <!-- Example: Singing event on 1:00 AM - 2:00 AM -->
       <tr>
         <td>Tuesday</td>
-        <td data-day="Tuesday" data-time="12:00 AM"></td>
-        <td data-day="Tuesday" data-time="01:00 AM"></td>
+        <td data-day="Tuesday" data-start="12:00" data-end="01:00"></td>
+        <td data-day="Tuesday" data-start="1:00" data-end="02:00"></td>
         <!-- Repeat the above columns for the rest of the days -->
       </tr>
       <tr>
